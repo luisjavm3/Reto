@@ -12,9 +12,7 @@ import com.luisjav.reto.DAO.IAppointmentDao;
 import com.luisjav.reto.DTO.Appointment.AppointmentDto;
 import com.luisjav.reto.DTO.Appointment.AppointmentInsertDto;
 import com.luisjav.reto.DTO.Appointment.AppointmentUpdateDto;
-import com.luisjav.reto.Entity.Affiliate;
 import com.luisjav.reto.Entity.Appointment;
-import com.luisjav.reto.Entity.Test;
 
 @Service
 public class AppointmentService implements IAppointmentService {
@@ -43,7 +41,7 @@ public class AppointmentService implements IAppointmentService {
 
 	@Override
 	public void Post(AppointmentInsertDto appointmentInsertDto) {
-		var toInsert = mapToEntity(appointmentInsertDto);
+		var toInsert = mapper.map(appointmentInsertDto, Appointment.class);
 
 		appointmentDao.save(toInsert);
 	}
@@ -73,18 +71,4 @@ public class AppointmentService implements IAppointmentService {
 		return null;
 	}
 
-	private Appointment mapToEntity(AppointmentInsertDto appointmentInsertDto) {
-		Appointment appointment = new Appointment();
-		Test test = new Test();
-		test.setId(appointmentInsertDto.getTest().longValue());
-		Affiliate affiliate = new Affiliate();
-		affiliate.setId(appointmentInsertDto.getAffiliate().longValue());
-
-		appointment.setDate(appointmentInsertDto.getDate());
-		appointment.setHourr(appointmentInsertDto.getHour());
-		appointment.setTest(test);
-		appointment.setAffiliate(affiliate);
-
-		return appointment;
-	}
 }
