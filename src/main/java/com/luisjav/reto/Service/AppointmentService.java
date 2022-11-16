@@ -1,5 +1,6 @@
 package com.luisjav.reto.Service;
 
+import java.rmi.NoSuchObjectException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,16 +48,24 @@ public class AppointmentService implements IAppointmentService {
 	}
 
 	@Override
-	public void Put(AppointmentUpdateDto appointmentUpdateDto) {
+	public void Put(AppointmentUpdateDto appointmentUpdateDto) throws NoSuchObjectException {
 		var toUpdate = mapper.map(appointmentUpdateDto, Appointment.class);
+		var existing = appointmentDao.findById(toUpdate.getId()).orElse(null);
+		
+		if(existing == null) 
+			throw new NoSuchObjectException("Appointment with Id: "+toUpdate.getId()+" not found.");
 
 		appointmentDao.save(toUpdate);
 	}
 
 	@Override
-	public void Delete(long id) {
-		// TODO Auto-generated method stub
+	public void Delete(long id) throws NoSuchObjectException {
+		var existing = appointmentDao.findById(id).orElse(null);
 
+		if (existing == null)
+			throw new NoSuchObjectException("Appointment with Id: " + id + " not found.");
+
+		appointmentDao.deleteById(id);
 	}
 
 	@Override
@@ -66,8 +75,7 @@ public class AppointmentService implements IAppointmentService {
 	}
 
 	@Override
-	public List<Appointment> GetByAffiliate(long id) {
-		// TODO Auto-generated method stub
+	public List<AppointmentDto> GetByAffiliate(long id) {
 		return null;
 	}
 

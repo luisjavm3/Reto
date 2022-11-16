@@ -1,5 +1,6 @@
 package com.luisjav.reto.Service;
 
+import java.rmi.NoSuchObjectException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,8 +13,8 @@ public interface IAppointmentService {
 	List<AppointmentDto> GetList();
 	AppointmentDto GetById(long id);
 	void Post(AppointmentInsertDto appointmentInsertDto);
-	void Put(AppointmentUpdateDto appointmentUpdateDto);
-	void Delete(long id);
+	void Put(AppointmentUpdateDto appointmentUpdateDto) throws NoSuchObjectException;
+	void Delete(long id) throws NoSuchObjectException;
 	List<Appointment> GetByDate(LocalDate date);
-	List<Appointment> GetByAffiliate(long id);
+	List<AppointmentDto> GetByAffiliate(long id);
 }
