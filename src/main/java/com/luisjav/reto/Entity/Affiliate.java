@@ -20,16 +20,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "affiliates")
 @DynamicUpdate
 public class Affiliate {
+
+	public Affiliate(long id) {
+		this.Id = id;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long Id;
-	
+
 	@Column(nullable = false)
 	private String name;
-	
+
 	@Column
 	private int age;
-	
+
 	@Column(unique = true, nullable = false)
 	private String email;
 }
