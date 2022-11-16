@@ -16,7 +16,6 @@ import lombok.Setter;
 public class AppointmentInsertDto {
 	@NotNull(message = "Date must not be null.")
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = Shape.STRING)
-//	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 	
 	@NotNull(message = "Hourr must not be null.")
@@ -27,11 +26,5 @@ public class AppointmentInsertDto {
 	
 	@NotNull(message = "Affiliate must not be null.")
 	private Long affiliate;
-	
-	@Override
-	public String toString()
-	{
-		return "{ date: "+getDate()+", hour: "+getHour()+", testId: "+getTest()+", affiliateId: "+getAffiliate()+" }";
-	}
 }
 
