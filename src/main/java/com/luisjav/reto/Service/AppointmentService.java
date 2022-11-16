@@ -51,9 +51,9 @@ public class AppointmentService implements IAppointmentService {
 	public void Put(AppointmentUpdateDto appointmentUpdateDto) throws NoSuchObjectException {
 		var toUpdate = mapper.map(appointmentUpdateDto, Appointment.class);
 		var existing = appointmentDao.findById(toUpdate.getId()).orElse(null);
-		
-		if(existing == null) 
-			throw new NoSuchObjectException("Appointment with Id: "+toUpdate.getId()+" not found.");
+
+		if (existing == null)
+			throw new NoSuchObjectException("Appointment with Id: " + toUpdate.getId() + " not found.");
 
 		appointmentDao.save(toUpdate);
 	}
@@ -70,13 +70,17 @@ public class AppointmentService implements IAppointmentService {
 
 	@Override
 	public List<Appointment> GetByDate(LocalDate date) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<AppointmentDto> GetByAffiliate(long id) {
-		return null;
+		var appointments = appointmentDao.findByAffiliateId(id);
+
+		var dtos = appointments.stream().map(item -> mapper.map(item, AppointmentDto.class))
+				.collect(Collectors.toList());
+
+		return dtos;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.luisjav.reto.Controller;
 
+import java.sql.Date;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +68,24 @@ public class AppointmentController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
+	}
+
+	@GetMapping("getbyaffiliates/{affiliateId}")
+	public ResponseEntity<?> GetByAffiliates(@PathVariable long affiliateId) {
+		try {
+			var result = appointmentService.GetByAffiliate(affiliateId);
+
+			if (result.size() == 0)
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+	@GetMapping("getbydate/{date}")
+	public ResponseEntity<?> GetByDate(@PathVariable Date date) {
+		return null;
 	}
 }
