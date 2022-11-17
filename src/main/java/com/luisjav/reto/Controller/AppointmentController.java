@@ -32,6 +32,7 @@ public class AppointmentController {
 	public ResponseEntity<?> Post(@Valid @RequestBody AppointmentInsertDto appointmentInsertDto) {
 		try {
 			appointmentService.Post(appointmentInsertDto);
+			
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

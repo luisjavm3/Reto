@@ -1,13 +1,12 @@
 package com.luisjav.reto.DTO.Appointment;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import lombok.Data;
 
@@ -19,8 +18,8 @@ public class AppointmentUpdateDto {
 	private Long Id;
 	
 	@NotNull(message = "Date must not be null.")
-	@JsonFormat(pattern = "dd/MM/yyyy", shape = Shape.STRING)
-	private Date date;
+	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
+	private LocalDate date;
 	
 	@NotNull(message = "Hourr must not be null.")
 	private Time hour;
