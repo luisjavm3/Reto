@@ -1,5 +1,8 @@
 package com.luisjav.reto.Controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +94,13 @@ public class AppointmentController {
 			if (!DateValidator.isValid(date))
 				throw new Exception();
 
-			return new ResponseEntity<>(HttpStatus.OK);
+			LocalDate d = LocalDate.of(year, month, day);
+			var result = appointmentService.GetByDate(Date.valueOf(d));
+
+			if (result.size() == 0)
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
