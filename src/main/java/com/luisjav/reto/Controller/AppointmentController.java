@@ -1,7 +1,5 @@
 package com.luisjav.reto.Controller;
 
-import java.sql.Date;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.luisjav.reto.DTO.Appointment.AppointmentInsertDto;
 import com.luisjav.reto.DTO.Appointment.AppointmentUpdateDto;
 import com.luisjav.reto.Service.IAppointmentService;
+import com.luisjav.reto.Utils.DateValidator;
 
 @RestController
 @RequestMapping("api/appointments")
@@ -84,8 +83,17 @@ public class AppointmentController {
 		}
 	}
 
-	@GetMapping("getbydate/{date}")
-	public ResponseEntity<?> GetByDate(@PathVariable Date date) {
-		return null;
+	@GetMapping("{day}/{month}/{year}")
+	public ResponseEntity<?> GetByDate(@PathVariable int day, @PathVariable int month, @PathVariable int year) {
+		try {
+			var date = day + "/" + month + "/" + year;
+
+			if (!DateValidator.isValid(date))
+				throw new Exception();
+
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }
