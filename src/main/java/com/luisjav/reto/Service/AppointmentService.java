@@ -69,7 +69,7 @@ public class AppointmentService implements IAppointmentService {
 	}
 
 	@Override
-	public List<Appointment> GetByDate(LocalDate date) {
+	public List<AppointmentDto> GetByDate(LocalDate date) {
 		return null;
 	}
 
