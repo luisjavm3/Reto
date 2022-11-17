@@ -1,7 +1,7 @@
 package com.luisjav.reto.DTO.Appointment;
 
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -22,7 +22,8 @@ public class AppointmentUpdateDto {
 	private LocalDate date;
 	
 	@NotNull(message = "Hourr must not be null.")
-	private Time hour;
+	@JsonFormat(pattern = "HH:mm", shape = JsonFormat.Shape.STRING)
+	private LocalTime hour;
 	
 	@NotNull(message = "Test must not be null.")
 	@Min(value = 1, message = "Test must be greater or equal to 1.")
