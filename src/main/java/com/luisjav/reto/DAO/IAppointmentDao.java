@@ -19,6 +19,6 @@ public interface IAppointmentDao extends JpaRepository<Appointment, Long> {
 	@Query("SELECT a FROM Appointment a WHERE a.affiliate.id = :affiliateId")
 	public Collection<Appointment> findByAffiliateId(@Param("affiliateId") long affiliateId);
 
-	@Query("SELECT a FROM Appointment a WHERE a.date = :date order by a.affiliate")
+	@Query("SELECT a FROM Appointment a WHERE a.date = :date ORDER BY a.affiliate")
 	public Collection<Appointment> findByDate(@Param("date") Date date);
 }

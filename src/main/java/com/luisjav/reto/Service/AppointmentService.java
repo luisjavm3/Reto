@@ -72,7 +72,8 @@ public class AppointmentService implements IAppointmentService {
 	public List<AppointmentDto> GetByDate(Date date) {
 		var appointments = appointmentDao.findByDate(date);
 
-		var dtos = appointments.stream().map(item -> mapper.map(item, AppointmentDto.class)).collect(Collectors.toList());
+		var dtos = appointments.stream().map(item -> mapper.map(item, AppointmentDto.class))
+				.collect(Collectors.toList());
 
 		return dtos;
 	}
