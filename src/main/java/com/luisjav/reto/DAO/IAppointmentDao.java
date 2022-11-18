@@ -1,6 +1,6 @@
 package com.luisjav.reto.DAO;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +20,5 @@ public interface IAppointmentDao extends JpaRepository<Appointment, Long> {
 	public Collection<Appointment> findByAffiliateId(@Param("affiliateId") long affiliateId);
 
 	@Query("SELECT a FROM Appointment a WHERE a.date = :date ORDER BY a.affiliate")
-	public Collection<Appointment> findByDate(@Param("date") Date date);
+	public Collection<Appointment> findByDate(@Param("date") LocalDate date);
 }

@@ -1,7 +1,7 @@
 package com.luisjav.reto.Entity;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +31,7 @@ public class Appointment {
 
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date date;
+	private LocalDate date;
 
 	@Column(nullable = false)
 	private Time hourr;

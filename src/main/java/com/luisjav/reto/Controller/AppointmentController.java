@@ -1,6 +1,5 @@
 package com.luisjav.reto.Controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import javax.validation.Valid;
@@ -96,7 +95,7 @@ public class AppointmentController {
 				throw new Exception();
 
 			LocalDate d = LocalDate.of(year, month, day);
-			var result = appointmentService.GetByDate(Date.valueOf(d));
+			var result = appointmentService.GetByDate(d);
 
 			if (result.size() == 0)
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);

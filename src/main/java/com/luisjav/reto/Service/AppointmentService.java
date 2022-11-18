@@ -1,7 +1,7 @@
 package com.luisjav.reto.Service;
 
 import java.rmi.NoSuchObjectException;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +69,7 @@ public class AppointmentService implements IAppointmentService {
 	}
 
 	@Override
-	public List<AppointmentDto> GetByDate(Date date) {
+	public List<AppointmentDto> GetByDate(LocalDate date) {
 		var appointments = appointmentDao.findByDate(date);
 
 		var dtos = appointments.stream().map(item -> mapper.map(item, AppointmentDto.class))

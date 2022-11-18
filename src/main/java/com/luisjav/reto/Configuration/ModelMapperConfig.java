@@ -1,6 +1,5 @@
 package com.luisjav.reto.Configuration;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
 
@@ -29,7 +28,7 @@ public class ModelMapperConfig {
 			public Appointment convert(MappingContext<AppointmentUpdateDto, Appointment> context) {
 				Appointment result = new Appointment();
 				result.setId(context.getSource().getId());
-				result.setDate(Date.valueOf(context.getSource().getDate()));
+				result.setDate(context.getSource().getDate());
 				result.setHourr(Time.valueOf(context.getSource().getHour()));
 				result.setAffiliate(new Affiliate(context.getSource().getAffiliate().longValue()));
 				result.setTest(new Test(context.getSource().getTest().longValue()));
@@ -42,7 +41,7 @@ public class ModelMapperConfig {
 			@Override
 			public Appointment convert(MappingContext<AppointmentInsertDto, Appointment> context) {
 				Appointment result = new Appointment();
-				result.setDate(Date.valueOf(context.getSource().getDate()));
+				result.setDate(context.getSource().getDate());
 				result.setHourr(Time.valueOf(context.getSource().getHour()));
 				result.setAffiliate(new Affiliate(context.getSource().getAffiliate().longValue()));
 				result.setTest(new Test(context.getSource().getTest().longValue()));

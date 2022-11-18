@@ -1,6 +1,6 @@
 package com.luisjav.reto.DTO.Appointment;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +13,7 @@ public class AppointmentDto {
 	private long id;
 
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = Shape.STRING)
-	private Date date;
+	private LocalDate date;
 
 	@JsonFormat(pattern = "HH:mm", shape = JsonFormat.Shape.STRING)
 	private LocalTime hour;
