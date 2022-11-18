@@ -1,6 +1,5 @@
 package com.luisjav.reto.Entity;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 

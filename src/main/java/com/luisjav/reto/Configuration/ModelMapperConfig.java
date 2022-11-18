@@ -1,8 +1,5 @@
 package com.luisjav.reto.Configuration;
 
-import java.sql.Time;
-import java.time.LocalTime;
-
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
@@ -22,7 +19,10 @@ public class ModelMapperConfig {
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
-
+		
+		mapper.createTypeMap(Appointment.class, AppointmentDto.class)
+				.addMapping(Appointment::getHourr, AppointmentDto::setHour);
+		
 		Converter<AppointmentUpdateDto, Appointment> appoUpdate = new Converter<AppointmentUpdateDto, Appointment>() {
 			@Override
 			public Appointment convert(MappingContext<AppointmentUpdateDto, Appointment> context) {
@@ -50,26 +50,8 @@ public class ModelMapperConfig {
 			}
 		};
 
-		Converter<Appointment, AppointmentDto> appoToDtoConv = new Converter<Appointment, AppointmentDto>() {
-
-			@Override
-			public AppointmentDto convert(MappingContext<Appointment, AppointmentDto> context) {
-				AppointmentDto result = new AppointmentDto();
-				result.setId(context.getSource().getId());
-				result.setDate(context.getSource().getDate());
-				result.setHour(context.getSource().getHourr());
-				result.setTestId(context.getSource().getTest().getId());
-				result.setTestName(context.getSource().getTest().getName());
-				result.setAffiliateId(context.getSource().getAffiliate().getId());
-				result.setAffiliateName(context.getSource().getAffiliate().getName());
-
-				return context.getSource() == null ? null : result;
-			}
-		};
-
 		mapper.addConverter(appoUpdate);
 		mapper.addConverter(appoInsert);
-		mapper.addConverter(appoToDtoConv);
 
 		return mapper;
 	}
