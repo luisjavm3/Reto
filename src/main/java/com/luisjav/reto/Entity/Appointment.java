@@ -2,6 +2,7 @@ package com.luisjav.reto.Entity;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ public class Appointment {
 	private LocalDate date;
 
 	@Column(nullable = false)
-	private Time hourr;
+	private LocalTime hourr;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "id_test", nullable = false)

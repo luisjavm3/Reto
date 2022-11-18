@@ -29,7 +29,7 @@ public class ModelMapperConfig {
 				Appointment result = new Appointment();
 				result.setId(context.getSource().getId());
 				result.setDate(context.getSource().getDate());
-				result.setHourr(Time.valueOf(context.getSource().getHour()));
+				result.setHourr(context.getSource().getHour());
 				result.setAffiliate(new Affiliate(context.getSource().getAffiliate().longValue()));
 				result.setTest(new Test(context.getSource().getTest().longValue()));
 
@@ -42,7 +42,7 @@ public class ModelMapperConfig {
 			public Appointment convert(MappingContext<AppointmentInsertDto, Appointment> context) {
 				Appointment result = new Appointment();
 				result.setDate(context.getSource().getDate());
-				result.setHourr(Time.valueOf(context.getSource().getHour()));
+				result.setHourr(context.getSource().getHour());
 				result.setAffiliate(new Affiliate(context.getSource().getAffiliate().longValue()));
 				result.setTest(new Test(context.getSource().getTest().longValue()));
 
@@ -54,13 +54,10 @@ public class ModelMapperConfig {
 
 			@Override
 			public AppointmentDto convert(MappingContext<Appointment, AppointmentDto> context) {
-				var hour = context.getSource().getHourr().getHours();
-				var minutes = context.getSource().getHourr().getMinutes();
-
 				AppointmentDto result = new AppointmentDto();
 				result.setId(context.getSource().getId());
 				result.setDate(context.getSource().getDate());
-				result.setHour(LocalTime.of(hour, minutes));
+				result.setHour(context.getSource().getHourr());
 				result.setTestId(context.getSource().getTest().getId());
 				result.setTestName(context.getSource().getTest().getName());
 				result.setAffiliateId(context.getSource().getAffiliate().getId());
