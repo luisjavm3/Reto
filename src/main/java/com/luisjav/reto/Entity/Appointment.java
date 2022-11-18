@@ -32,14 +32,14 @@ public class Appointment {
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date date;
-	
+
 	@Column(nullable = false)
 	private Time hourr;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "id_test", nullable = false)
 	private Test test;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "id_affiliate", nullable = false)
 	private Affiliate affiliate;

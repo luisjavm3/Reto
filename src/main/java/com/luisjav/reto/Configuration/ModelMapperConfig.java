@@ -50,23 +50,23 @@ public class ModelMapperConfig {
 				return context.getSource() == null ? null : result;
 			}
 		};
-		
+
 		Converter<Appointment, AppointmentDto> appoToDtoConv = new Converter<Appointment, AppointmentDto>() {
-			
+
 			@Override
 			public AppointmentDto convert(MappingContext<Appointment, AppointmentDto> context) {
 				var hour = context.getSource().getHourr().getHours();
 				var minutes = context.getSource().getHourr().getMinutes();
-				
+
 				AppointmentDto result = new AppointmentDto();
 				result.setId(context.getSource().getId());
 				result.setDate(context.getSource().getDate());
-				result.setHour(LocalTime.of(hour, minutes) );
+				result.setHour(LocalTime.of(hour, minutes));
 				result.setTestId(context.getSource().getTest().getId());
 				result.setTestName(context.getSource().getTest().getName());
 				result.setAffiliateId(context.getSource().getAffiliate().getId());
 				result.setAffiliateName(context.getSource().getAffiliate().getName());
-				
+
 				return context.getSource() == null ? null : result;
 			}
 		};

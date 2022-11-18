@@ -17,12 +17,12 @@ public class AppointmentDto {
 
 	@JsonFormat(pattern = "HH:mm", shape = JsonFormat.Shape.STRING)
 	private LocalTime hour;
-	
+
 	private long testId;
-	
+
 	private String testName;
-	
+
 	private long affiliateId;
-	
+
 	private String affiliateName;
 }

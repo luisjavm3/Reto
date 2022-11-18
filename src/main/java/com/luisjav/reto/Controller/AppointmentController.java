@@ -32,7 +32,7 @@ public class AppointmentController {
 	public ResponseEntity<?> Post(@Valid @RequestBody AppointmentInsertDto appointmentInsertDto) {
 		try {
 			appointmentService.Post(appointmentInsertDto);
-			
+
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -73,7 +73,7 @@ public class AppointmentController {
 		}
 	}
 
-	@GetMapping("getbyaffiliates/{affiliateId}")
+	@GetMapping("affiliate/{affiliateId}")
 	public ResponseEntity<?> GetByAffiliates(@PathVariable long affiliateId) {
 		try {
 			var result = appointmentService.GetByAffiliate(affiliateId);
