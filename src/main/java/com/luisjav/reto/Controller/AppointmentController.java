@@ -27,17 +27,6 @@ public class AppointmentController {
 	@Autowired
 	private IAppointmentService appointmentService;
 
-	@PostMapping
-	public ResponseEntity<?> Post(@Valid @RequestBody AppointmentInsertDto appointmentInsertDto) {
-		try {
-			appointmentService.Post(appointmentInsertDto);
-
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-
 	@GetMapping
 	public ResponseEntity<?> GetList() {
 		try {
@@ -49,6 +38,31 @@ public class AppointmentController {
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<?> GetById(@PathVariable long id) {
+		try {
+			var result = appointmentService.GetById(id);
+
+			if (result == null)
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping
+	public ResponseEntity<?> Post(@Valid @RequestBody AppointmentInsertDto appointmentInsertDto) {
+		try {
+			appointmentService.Post(appointmentInsertDto);
+
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 

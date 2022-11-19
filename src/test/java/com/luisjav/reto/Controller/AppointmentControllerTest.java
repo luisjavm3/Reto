@@ -58,6 +58,30 @@ public class AppointmentControllerTest {
 	}
 
 	@Test
+	public void GetById__RetornaStatus404__CuandoNoHayResultado() {
+//		Arrange
+		when(appointmentServiceMock.GetById(anyLong())).thenReturn(null);
+
+//		Act
+		var result = appointmentController.GetById(12);
+
+//		Assert
+		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+	}
+
+	@Test
+	public void GetById__RetornaStatus200__CuandoHayResultado() {
+//		Arrange
+		when(appointmentServiceMock.GetById(anyLong())).thenReturn(new AppointmentDto());
+
+//		Act
+		var result = appointmentController.GetById(12);
+
+//		Assert
+		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+	}
+
+	@Test
 	public void Post__RetornaStatus404__CuandoAppointmentNoSeGuarda() {
 //		Arrange
 		doThrow(new RuntimeException()).when(appointmentServiceMock).Post(any(AppointmentInsertDto.class));
