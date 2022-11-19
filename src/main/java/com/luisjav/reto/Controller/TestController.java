@@ -32,30 +32,30 @@ public class TestController {
 	public ResponseEntity<?> GetList() {
 		try {
 			List<Test> tests = testService.GetList();
-			
+
 			if (tests.size() > 0)
 				return new ResponseEntity<>(tests, HttpStatus.OK);
-			
+
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
 	@GetMapping("{id}")
 	public ResponseEntity<?> GetById(@PathVariable("id") long id) {
 		try {
 			Test test = testService.GetById(id);
-			
+
 			if (test != null)
 				return new ResponseEntity<>(test, HttpStatus.OK);
-			
+
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<?> Post(@Valid @RequestBody TestInsertDto testInsertDto) {
 		try {
@@ -67,7 +67,7 @@ public class TestController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> Put(@RequestBody TestUpdateDto testUpdateDto){
+	public ResponseEntity<?> Put(@RequestBody TestUpdateDto testUpdateDto) {
 		try {
 			testService.Put(testUpdateDto);
 			return new ResponseEntity<>(HttpStatus.CREATED);
@@ -75,10 +75,9 @@ public class TestController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> Delete(@PathVariable("id") long id)
-	{
+	public ResponseEntity<?> Delete(@PathVariable("id") long id) {
 		try {
 			testService.Delete(id);
 			return new ResponseEntity<>(HttpStatus.OK);
