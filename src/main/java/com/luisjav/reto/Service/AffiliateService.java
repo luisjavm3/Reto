@@ -2,6 +2,7 @@ package com.luisjav.reto.Service;
 
 import java.rmi.NoSuchObjectException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luisjav.reto.DAO.IAffiliateDAO;
+import com.luisjav.reto.DTO.Affiliate.AffiliateDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
 import com.luisjav.reto.Entity.Affiliate;
@@ -25,19 +27,25 @@ public class AffiliateService implements IAffiliateService {
 	private ModelMapper mapper;
 
 	@Override
-	public List<Affiliate> GetList() {
-		return affiliateDao.findAll();
+	public List<AffiliateDto> GetList() {
+		var affiliates = affiliateDao.findAll();
+
+		var dtos = affiliates.stream().map(item -> mapper.map(item, AffiliateDto.class)).collect(Collectors.toList());
+
+		return dtos;
 	}
 
 	@Override
-	public Affiliate GetById(long id) {
-		return affiliateDao.findById(id).orElse(null);
+	public AffiliateDto GetById(long id) {
+		var affiliate = affiliateDao.findById(id).orElse(null);
+
+		return mapper.map(affiliate, AffiliateDto.class);
 	}
 
 	@Override
 	public void Post(AffiliateInsertDto affiliateInsertDto) {
 		Affiliate toInsert = mapper.map(affiliateInsertDto, Affiliate.class);
-		
+
 		affiliateDao.save(toInsert);
 	}
 
@@ -49,17 +57,17 @@ public class AffiliateService implements IAffiliateService {
 
 		if (existing == null)
 			throw new NoSuchObjectException("Affiliate with Id: " + id + " not found.");
-		
+
 		affiliateDao.save(toUpdate);
 	}
 
 	@Override
 	public void Delete(long id) throws NoSuchObjectException {
 		Affiliate existing = affiliateDao.findById(id).orElse(null);
-		
+
 		if (existing == null)
 			throw new NoSuchObjectException("Affiliate with Id: " + id + " not found.");
-		
+
 		affiliateDao.deleteById(id);
 	}
 

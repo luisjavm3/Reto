@@ -1,7 +1,5 @@
 package com.luisjav.reto.Controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.luisjav.reto.DTO.Test.TestInsertDto;
 import com.luisjav.reto.DTO.Test.TestUpdateDto;
-import com.luisjav.reto.Entity.Test;
 import com.luisjav.reto.Service.ITestService;
 
 @RestController
@@ -31,7 +28,7 @@ public class TestController {
 	@GetMapping
 	public ResponseEntity<?> GetList() {
 		try {
-			List<Test> tests = testService.GetList();
+			var tests = testService.GetList();
 
 			if (tests.size() > 0)
 				return new ResponseEntity<>(tests, HttpStatus.OK);
@@ -45,7 +42,7 @@ public class TestController {
 	@GetMapping("{id}")
 	public ResponseEntity<?> GetById(@PathVariable("id") long id) {
 		try {
-			Test test = testService.GetById(id);
+			var test = testService.GetById(id);
 
 			if (test != null)
 				return new ResponseEntity<>(test, HttpStatus.OK);

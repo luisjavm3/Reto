@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+import com.luisjav.reto.DTO.Test.TestDto;
 import com.luisjav.reto.DTO.Test.TestInsertDto;
 import com.luisjav.reto.DTO.Test.TestUpdateDto;
 import com.luisjav.reto.Service.ITestService;
@@ -40,8 +41,8 @@ public class TestControllerTest {
 	@Test
 	public void GetList__RetornaStatus200__CuantoHayResultado() {
 //		Arrange
-		var list = new ArrayList<com.luisjav.reto.Entity.Test>();
-		list.add(new com.luisjav.reto.Entity.Test());
+		var list = new ArrayList<TestDto>();
+		list.add(new TestDto());
 		when(testServiceMock.GetList()).thenReturn(list);
 
 //		Act
@@ -66,7 +67,7 @@ public class TestControllerTest {
 	@Test
 	public void GetById__RetornaStatus200__CuantoHayResultado() {
 //		Arrange
-		when(testServiceMock.GetById(anyLong())).thenReturn(new com.luisjav.reto.Entity.Test(anyLong()));
+		when(testServiceMock.GetById(anyLong())).thenReturn(new TestDto(anyLong()));
 
 //		Act
 		var result = testController.GetById(13);

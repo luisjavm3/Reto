@@ -19,9 +19,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
+import com.luisjav.reto.DTO.Affiliate.AffiliateDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
-import com.luisjav.reto.Entity.Affiliate;
 import com.luisjav.reto.Service.IAffiliateService;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,8 +49,8 @@ public class AffiliateControllerTest {
 	@Test
 	public void GetList__RetornaStatus200__CuandoHayResultado() {
 //		Arrange
-		var list = new ArrayList<Affiliate>();
-		list.add(new Affiliate(1));
+		var list = new ArrayList<AffiliateDto>();
+		list.add(new AffiliateDto(1));
 
 		when(affiliateServiceMock.GetList()).thenReturn(list);
 
@@ -76,7 +76,7 @@ public class AffiliateControllerTest {
 	@Test
 	public void GetById__RetornaStatus200_CuandoHayResultado() {
 //		Arrange
-		when(affiliateServiceMock.GetById(anyLong())).thenReturn(new Affiliate(anyLong()));
+		when(affiliateServiceMock.GetById(anyLong())).thenReturn(new AffiliateDto(anyLong()));
 
 //		Act
 		var result = affiliateController.GetById(4);

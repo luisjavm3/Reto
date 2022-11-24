@@ -2,6 +2,7 @@ package com.luisjav.reto.Service;
 
 import java.rmi.NoSuchObjectException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luisjav.reto.DAO.ITestDAO;
+import com.luisjav.reto.DTO.Test.TestDto;
 import com.luisjav.reto.DTO.Test.TestInsertDto;
 import com.luisjav.reto.DTO.Test.TestUpdateDto;
 import com.luisjav.reto.Entity.Test;
@@ -31,13 +33,19 @@ public class TestService implements ITestService {
 	}
 
 	@Override
-	public List<Test> GetList() {
-		return testDao.findAll();
+	public List<TestDto> GetList() {
+		var tests = testDao.findAll();
+
+		var dtos = tests.stream().map(item -> mapper.map(item, TestDto.class)).collect(Collectors.toList());
+
+		return dtos;
 	}
 
 	@Override
-	public Test GetById(long id) {
-		return testDao.findById(id).orElse(null);
+	public TestDto GetById(long id) {
+		var test = testDao.findById(id).orElse(null);
+
+		return mapper.map(test, TestDto.class);
 	}
 
 	@Override
@@ -55,10 +63,10 @@ public class TestService implements ITestService {
 	@Override
 	public void Delete(long id) throws NoSuchObjectException {
 		Test existing = testDao.findById(id).orElse(null);
-		
-		if(existing == null)
-			throw new NoSuchObjectException("Test with Id: "+id+" not found.");
-		
+
+		if (existing == null)
+			throw new NoSuchObjectException("Test with Id: " + id + " not found.");
+
 		testDao.delete(existing);
 	}
 

@@ -1,7 +1,5 @@
 package com.luisjav.reto.Controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
-import com.luisjav.reto.Entity.Affiliate;
 import com.luisjav.reto.Service.IAffiliateService;
 
 @RestController
@@ -31,7 +28,7 @@ public class AffiliateController {
 	@GetMapping
 	public ResponseEntity<?> GetList() {
 		try {
-			List<Affiliate> affiliates = affiliateService.GetList();
+			var affiliates = affiliateService.GetList();
 
 			if (affiliates.size() == 0)
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -45,7 +42,7 @@ public class AffiliateController {
 	@GetMapping("{id}")
 	public ResponseEntity<?> GetById(@PathVariable long id) {
 		try {
-			Affiliate affiliate = affiliateService.GetById(id);
+			var affiliate = affiliateService.GetById(id);
 
 			if (affiliate == null)
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
