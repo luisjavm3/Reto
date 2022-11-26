@@ -19,7 +19,7 @@ import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
 import com.luisjav.reto.Service.IAffiliateService;
 
 @RestController
-@RequestMapping("api/affiliates")
+@RequestMapping("api/controller/affiliates")
 public class AffiliateController {
 
 	@Autowired

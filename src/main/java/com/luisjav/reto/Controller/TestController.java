@@ -19,7 +19,7 @@ import com.luisjav.reto.DTO.Test.TestUpdateDto;
 import com.luisjav.reto.Service.ITestService;
 
 @RestController
-@RequestMapping("api/tests")
+@RequestMapping("api/controller/tests")
 public class TestController {
 
 	@Autowired

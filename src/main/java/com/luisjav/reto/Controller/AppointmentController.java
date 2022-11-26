@@ -22,7 +22,7 @@ import com.luisjav.reto.Service.IAppointmentService;
 import com.luisjav.reto.Utils.DateValidator;
 
 @RestController
-@RequestMapping("api/appointments")
+@RequestMapping("api/controller/appointments")
 public class AppointmentController {
 	@Autowired
 	private IAppointmentService appointmentService;
