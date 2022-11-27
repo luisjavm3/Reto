@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.luisjav.reto.DTO.Appointment.AppointmentInsertDto;
@@ -28,14 +29,24 @@ public class AppointmentController {
 	private IAppointmentService appointmentService;
 
 	@GetMapping
-	public ResponseEntity<?> GetList() {
+	public ResponseEntity<?> GetList(@RequestParam(required = false, name = "affiliate") Long affiliateId) {
 		try {
+			if (affiliateId != null) {
+				var appointments = appointmentService.GetByAffiliate(affiliateId);
+
+				if (appointments.size() == 0)
+					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+				return new ResponseEntity<>(appointments, HttpStatus.OK);
+			}
+
 			var list = appointmentService.GetList();
 
 			if (list.size() == 0)
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 			return new ResponseEntity<>(list, HttpStatus.OK);
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -81,20 +92,6 @@ public class AppointmentController {
 		try {
 			appointmentService.Delete(id);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-	}
-
-	@GetMapping("affiliate/{affiliateId}")
-	public ResponseEntity<?> GetByAffiliates(@PathVariable long affiliateId) {
-		try {
-			var result = appointmentService.GetByAffiliate(affiliateId);
-
-			if (result.size() == 0)
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}

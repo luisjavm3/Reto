@@ -32,26 +32,52 @@ public class AppointmentControllerTest {
 	private IAppointmentService appointmentServiceMock;
 
 	@Test
-	public void GetList__RetornaStatus204__CuandoNoHayResultado() {
+	public void GetList__RetornaStatus204__CuandoNoSeBuscaPorAfiliadoNiHayResultado() {
 //		Arrange
 		when(appointmentServiceMock.GetList()).thenReturn(Collections.emptyList());
 
 //		Act
-		var result = appointmentController.GetList();
+		var result = appointmentController.GetList(null);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
 	}
 
 	@Test
-	public void GetList__RetornaStatus200__CuandoHayResultado() {
+	public void GetList__RetornaStatus200__CuandoNoSeBuscaPorAfiliadoPeroSiHayResultado() {
 //		Arrange
 		var list = new ArrayList<AppointmentDto>();
 		list.add(new AppointmentDto());
 		when(appointmentServiceMock.GetList()).thenReturn(list);
 
 //		Act
-		var result = appointmentController.GetList();
+		var result = appointmentController.GetList(null);
+
+//		Assert
+		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+	}
+
+	@Test
+	public void GetList__RetornaStatus204__CuandoSeBuscaPorAfiliadoYNoHayResultado() {
+//		Arrange
+		when(appointmentServiceMock.GetByAffiliate(anyLong())).thenReturn(Collections.emptyList());
+
+//		Act
+		var result = appointmentController.GetList(12l);
+
+//		Assert
+		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+	}
+
+	@Test
+	public void GetList__RetornaStatus200__CuandoSeBuscaPorAfiliadoYSiHayResultado() {
+//		Arrange
+		var list = new ArrayList<AppointmentDto>();
+		list.add(new AppointmentDto());
+		when(appointmentServiceMock.GetByAffiliate(anyLong())).thenReturn(list);
+
+//		Act
+		var result = appointmentController.GetList(12l);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -186,32 +212,6 @@ public class AppointmentControllerTest {
 
 //		Act
 		var result = appointmentController.GetByDate(12, 12, 1990);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
-	}
-
-	@Test
-	public void GetByAffiliates__RetornaStatus204__CuandoNoHayResultado() {
-//		Arrange
-		when(appointmentServiceMock.GetByAffiliate(anyLong())).thenReturn(Collections.emptyList());
-
-//		Act
-		var result = appointmentController.GetByAffiliates(12);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
-	}
-
-	@Test
-	public void GetByAffiliates__RetornaStatus200__CuandoHayResultado() {
-//		Arrange
-		var list = new ArrayList<AppointmentDto>();
-		list.add(new AppointmentDto());
-		when(appointmentServiceMock.GetByAffiliate(anyLong())).thenReturn(list);
-
-//		Act
-		var result = appointmentController.GetByAffiliates(12);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
