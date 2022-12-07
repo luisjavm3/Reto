@@ -37,7 +37,7 @@ public class AppointmentControllerTest {
 		when(appointmentServiceMock.GetList()).thenReturn(Collections.emptyList());
 
 //		Act
-		var result = appointmentController.GetList(null);
+		var result = appointmentController.GetList(null, null);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
@@ -51,7 +51,7 @@ public class AppointmentControllerTest {
 		when(appointmentServiceMock.GetList()).thenReturn(list);
 
 //		Act
-		var result = appointmentController.GetList(null);
+		var result = appointmentController.GetList(null, null);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -63,7 +63,7 @@ public class AppointmentControllerTest {
 		when(appointmentServiceMock.GetByAffiliate(anyLong())).thenReturn(Collections.emptyList());
 
 //		Act
-		var result = appointmentController.GetList(12l);
+		var result = appointmentController.GetList(12l, null);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
@@ -77,7 +77,7 @@ public class AppointmentControllerTest {
 		when(appointmentServiceMock.GetByAffiliate(anyLong())).thenReturn(list);
 
 //		Act
-		var result = appointmentController.GetList(12l);
+		var result = appointmentController.GetList(12l, null);
 
 //		Assert
 		Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());

@@ -1,6 +1,8 @@
 package com.luisjav.reto.Controller;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.validation.Valid;
 
@@ -29,7 +31,7 @@ public class AppointmentController {
 	private IAppointmentService appointmentService;
 
 	@GetMapping
-	public ResponseEntity<?> GetList(@RequestParam(required = false, name = "affiliate") Long affiliateId) {
+	public ResponseEntity<?> GetList(@RequestParam(required = false, name = "affiliate") Long affiliateId, @RequestParam(required = false, name = "date") String date) {
 		try {
 			if (affiliateId != null) {
 				var appointments = appointmentService.GetByAffiliate(affiliateId);
@@ -38,6 +40,24 @@ public class AppointmentController {
 					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
 				return new ResponseEntity<>(appointments, HttpStatus.OK);
+			}
+			
+			if(date != null) {
+				if (!DateValidator.isValid(date))
+					return new ResponseEntity<String>("Wrong date format. Type dd/MM/yyyy instead.", HttpStatus.NO_CONTENT);
+				
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		        LocalDate localDate = LocalDate.parse(date, formatter);
+		        
+		        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        formatter1.format(localDate);
+		        
+		        var result = appointmentService.GetByDate(localDate);
+
+				if (result.size() == 0)
+					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+				return new ResponseEntity<>(result, HttpStatus.OK);
 			}
 
 			var list = appointmentService.GetList();
