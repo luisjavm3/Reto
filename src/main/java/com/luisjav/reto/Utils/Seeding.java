@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.luisjav.reto.DAO.IAffiliateDAO;
+import com.luisjav.reto.DAO.IAppointmentDao;
 import com.luisjav.reto.DAO.ITestDAO;
 import com.luisjav.reto.Entity.Affiliate;
 import com.luisjav.reto.Entity.Test;
@@ -17,13 +18,18 @@ public class Seeding implements CommandLineRunner {
 	@Autowired
 	private IAffiliateDAO affiliateDao;
 	
-//	@Autowired
-//	private IAppointmentDao appointmentDao;
+	@Autowired
+	private IAppointmentDao appointmentDao;
 
 	@Override
 	public void run(String... args) throws Exception {
+		appointmentDao.deleteAllInBatch();
+		affiliateDao.deleteAllInBatch();
+		testDao.deleteAllInBatch();;
+		
 		loadTests();
 		loadAffiliates();
+		loadAppointments();
 	}
 
 	private void loadTests() {
@@ -50,11 +56,17 @@ public class Seeding implements CommandLineRunner {
 		}
 	}
 	
-//	private void loadAppointments()
-//	{
-////		if(appointmentDao.count() == 0) {
-////			Appointment a1 = new Appointment(0, "15/11/2022", "");
-////		}
-//	}
+	private void loadAppointments()
+	{
+//		if(appointmentDao.count() == 0) {
+//			Appointment a1 = new Appointment();
+//			a1.setDate(LocalDate.of(2022, 01, 01));
+//			a1.setHourr(LocalTime.now());
+//			a1.setTest(new Test(1));
+//			a1.setAffiliate(new Affiliate(1));
+//			
+//			appointmentDao.save(a1);
+//		}
+	}
 
 }
