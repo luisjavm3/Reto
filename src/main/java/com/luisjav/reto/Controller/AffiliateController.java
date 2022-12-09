@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
+import com.luisjav.reto.Exception.NoContentException;
+import com.luisjav.reto.Exception.NotFoundException;
 import com.luisjav.reto.Service.IAffiliateService;
 
 @RestController
@@ -26,31 +28,23 @@ public class AffiliateController {
 	private IAffiliateService affiliateService;
 
 	@GetMapping
-	public ResponseEntity<?> GetList() {
-		try {
-			var affiliates = affiliateService.GetList();
+	public ResponseEntity<?> GetList() throws NoContentException {
+		var affiliates = affiliateService.GetList();
 
-			if (affiliates.size() == 0)
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		if (affiliates.size() == 0)
+			throw new NoContentException();
 
-			return new ResponseEntity<>(affiliates, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		return new ResponseEntity<>(affiliates, HttpStatus.OK);
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<?> GetById(@PathVariable long id) {
-		try {
-			var affiliate = affiliateService.GetById(id);
+	public ResponseEntity<?> GetById(@PathVariable long id) throws NotFoundException {
+		var affiliate = affiliateService.GetById(id);
 
-			if (affiliate == null)
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if (affiliate == null)
+			throw new NotFoundException();
 
-			return new ResponseEntity<>(affiliate, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		return new ResponseEntity<>(affiliate, HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -64,22 +58,14 @@ public class AffiliateController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> Put(@Valid @RequestBody AffiliateUpdateDto affiliateUpdateDto) {
-		try {
-			affiliateService.Put(affiliateUpdateDto);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<?> Put(@Valid @RequestBody AffiliateUpdateDto affiliateUpdateDto) throws NotFoundException {
+		affiliateService.Put(affiliateUpdateDto);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> Delete(@PathVariable long id) {
-		try {
-			affiliateService.Delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+	public ResponseEntity<?> Delete(@PathVariable long id) throws NoContentException {
+		affiliateService.Delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

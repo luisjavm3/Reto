@@ -6,6 +6,8 @@ import java.util.List;
 import com.luisjav.reto.DTO.Affiliate.AffiliateDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
+import com.luisjav.reto.Exception.NoContentException;
+import com.luisjav.reto.Exception.NotFoundException;
 
 public interface IAffiliateService {
 	/**
@@ -32,12 +34,13 @@ public interface IAffiliateService {
 	 * @param affiliateUpdateDto
 	 * @throws NoSuchObjectException
 	 */
-	void Put(AffiliateUpdateDto affiliateUpdateDto) throws NoSuchObjectException;
+	void Put(AffiliateUpdateDto affiliateUpdateDto) throws NotFoundException;
 	
 	/**
 	 * Elimina un Affiliate de la base de datos, o lanza un error si no existe. 
 	 * @param id
 	 * @throws NoSuchObjectException
+	 * @throws NoContentException 
 	 */
-	void Delete(long id) throws NoSuchObjectException;
+	void Delete(long id) throws NoContentException;
 }
