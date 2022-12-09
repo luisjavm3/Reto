@@ -1,6 +1,5 @@
 package com.luisjav.reto.Service;
 
-import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +14,8 @@ import com.luisjav.reto.DTO.Affiliate.AffiliateDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
 import com.luisjav.reto.Entity.Affiliate;
+import com.luisjav.reto.Exception.NoContentException;
+import com.luisjav.reto.Exception.NotFoundException;
 
 @Service
 @Transactional
@@ -50,23 +51,23 @@ public class AffiliateService implements IAffiliateService {
 	}
 
 	@Override
-	public void Put(AffiliateUpdateDto affiliateUpdateDto) throws NoSuchObjectException {
+	public void Put(AffiliateUpdateDto affiliateUpdateDto) throws NotFoundException {
 		long id = affiliateUpdateDto.getId().longValue();
 		Affiliate toUpdate = mapper.map(affiliateUpdateDto, Affiliate.class);
 		Affiliate existing = affiliateDao.findById(id).orElse(null);
 
 		if (existing == null)
-			throw new NoSuchObjectException("Affiliate with Id: " + id + " not found.");
+			throw new NotFoundException("Affiliate with Id: " + id + " not found.");
 
 		affiliateDao.save(toUpdate);
 	}
 
 	@Override
-	public void Delete(long id) throws NoSuchObjectException {
+	public void Delete(long id) throws NoContentException {
 		Affiliate existing = affiliateDao.findById(id).orElse(null);
 
 		if (existing == null)
-			throw new NoSuchObjectException("Affiliate with Id: " + id + " not found.");
+			throw new NoContentException("Affiliate with Id: " + id + " not found.");
 
 		affiliateDao.deleteById(id);
 	}
