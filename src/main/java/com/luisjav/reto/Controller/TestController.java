@@ -1,5 +1,7 @@
 package com.luisjav.reto.Controller;
 
+import java.rmi.NoSuchObjectException;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.luisjav.reto.DTO.Test.TestInsertDto;
 import com.luisjav.reto.DTO.Test.TestUpdateDto;
+import com.luisjav.reto.Exception.NoContentException;
+import com.luisjav.reto.Exception.NotFoundException;
 import com.luisjav.reto.Service.ITestService;
 
 @RestController
@@ -26,31 +30,23 @@ public class TestController {
 	private ITestService testService;
 
 	@GetMapping
-	public ResponseEntity<?> GetList() {
-		try {
-			var tests = testService.GetList();
+	public ResponseEntity<?> GetList() throws NoContentException {
+		var tests = testService.GetList();
 
-			if (tests.size() > 0)
-				return new ResponseEntity<>(tests, HttpStatus.OK);
+		if (tests.size() == 0)
+			throw new NoContentException();
 
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+		return new ResponseEntity<>(tests, HttpStatus.OK);
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<?> GetById(@PathVariable("id") long id) {
-		try {
-			var test = testService.GetById(id);
+	public ResponseEntity<?> GetById(@PathVariable("id") long id) throws NotFoundException {
+		var test = testService.GetById(id);
 
-			if (test != null)
-				return new ResponseEntity<>(test, HttpStatus.OK);
+		if (test == null)
+			throw new NotFoundException();
 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		return new ResponseEntity<>(test, HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -64,23 +60,15 @@ public class TestController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> Put(@RequestBody TestUpdateDto testUpdateDto) {
-		try {
-			testService.Put(testUpdateDto);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<?> Put(@RequestBody TestUpdateDto testUpdateDto) throws NoSuchObjectException {
+		testService.Put(testUpdateDto);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> Delete(@PathVariable("id") long id) {
-		try {
-			testService.Delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+	public ResponseEntity<?> Delete(@PathVariable("id") long id) throws NoSuchObjectException {
+		testService.Delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

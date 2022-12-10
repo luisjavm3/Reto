@@ -1,7 +1,12 @@
 package com.luisjav.reto.Controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
+import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import com.luisjav.reto.DTO.Test.TestDto;
 import com.luisjav.reto.DTO.Test.TestInsertDto;
 import com.luisjav.reto.DTO.Test.TestUpdateDto;
+import com.luisjav.reto.Exception.NoContentException;
+import com.luisjav.reto.Exception.NotFoundException;
 import com.luisjav.reto.Service.ITestService;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,15 +38,12 @@ public class TestControllerTest {
 //		Arrange
 		when(testServiceMock.GetList()).thenReturn(Collections.emptyList());
 
-//		Act
-		var result = testController.GetList();
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(NoContentException.class, () -> testController.GetList());
 	}
 
 	@Test
-	public void GetList__RetornaStatus200__CuantoHayResultado() {
+	public void GetList__RetornaStatus200__CuantoHayResultado() throws NoContentException {
 //		Arrange
 		var list = new ArrayList<TestDto>();
 		list.add(new TestDto());
@@ -57,15 +61,12 @@ public class TestControllerTest {
 //		Arrange
 		when(testServiceMock.GetById(anyLong())).thenReturn(null);
 
-//		Act
-		var result = testController.GetById(13);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(NotFoundException.class, () -> testController.GetById(13));
 	}
 
 	@Test
-	public void GetById__RetornaStatus200__CuantoHayResultado() {
+	public void GetById__RetornaStatus200__CuantoHayResultado() throws NotFoundException {
 //		Arrange
 		when(testServiceMock.GetById(anyLong())).thenReturn(new TestDto(anyLong()));
 
@@ -108,15 +109,12 @@ public class TestControllerTest {
 		} catch (Exception e) {
 		}
 
-//		Act
-		var result = testController.Put(new TestUpdateDto());
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(RuntimeException.class, () -> testController.Put(new TestUpdateDto()));
 	}
 
 	@Test
-	public void Put__RetornaStatus201__CuantoElTestSeActualiza() {
+	public void Put__RetornaStatus201__CuantoElTestSeActualiza() throws NoSuchObjectException {
 //		Arrange
 		try {
 			doNothing().when(testServiceMock).Put(any(TestUpdateDto.class));
@@ -138,15 +136,12 @@ public class TestControllerTest {
 		} catch (Exception e) {
 		}
 
-//		Act
-		var result = testController.Delete(12);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(RuntimeException.class, () -> testController.Delete(12));
 	}
 
 	@Test
-	public void Delete__RetornaStatus200__CuantoElTestSeElimina() {
+	public void Delete__RetornaStatus200__CuantoElTestSeElimina() throws NoSuchObjectException {
 //		Arrange
 		try {
 			doNothing().when(testServiceMock).Delete(anyLong());
