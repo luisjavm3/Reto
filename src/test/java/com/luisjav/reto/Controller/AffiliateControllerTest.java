@@ -22,6 +22,8 @@ import org.springframework.http.HttpStatus;
 import com.luisjav.reto.DTO.Affiliate.AffiliateDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateInsertDto;
 import com.luisjav.reto.DTO.Affiliate.AffiliateUpdateDto;
+import com.luisjav.reto.Exception.NoContentException;
+import com.luisjav.reto.Exception.NotFoundException;
 import com.luisjav.reto.Service.IAffiliateService;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,20 +36,17 @@ public class AffiliateControllerTest {
 	@Mock
 	private IAffiliateService affiliateServiceMock;
 
-	@Test
+	@Test()
 	public void GetList__RetornaStatus204__CuandoElResultadoEsUnaListaVacia() {
 //		Arrange
 		when(affiliateServiceMock.GetList()).thenReturn(Collections.emptyList());
 
-		// Act
-		var response = affiliateController.GetList();
-
-		// Assert
-		Assertions.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+		// Act - Assert
+		Assertions.assertThrows(NoContentException.class, () -> affiliateController.GetList());
 	}
 
 	@Test
-	public void GetList__RetornaStatus200__CuandoHayResultado() {
+	public void GetList__RetornaStatus200__CuandoHayResultado() throws NoContentException {
 //		Arrange
 		var list = new ArrayList<AffiliateDto>();
 		list.add(new AffiliateDto(1));
@@ -62,19 +61,16 @@ public class AffiliateControllerTest {
 	}
 
 	@Test
-	public void GetById__RetornaStatus404__CuandoNoHayResultado() {
+	public void GetById__RetornaStatus404__CuandoNoHayResultado() throws NotFoundException {
 //		Arrange
 		when(affiliateServiceMock.GetById(anyLong())).thenReturn(null);
 
-//		Act
-		var result = affiliateController.GetById(anyLong());
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(NotFoundException.class, () -> affiliateController.GetById(anyLong()));
 	}
 
 	@Test
-	public void GetById__RetornaStatus200_CuandoHayResultado() {
+	public void GetById__RetornaStatus200_CuandoHayResultado() throws NotFoundException {
 //		Arrange
 		when(affiliateServiceMock.GetById(anyLong())).thenReturn(new AffiliateDto(anyLong()));
 
@@ -110,7 +106,7 @@ public class AffiliateControllerTest {
 	}
 
 	@Test
-	public void Put__RetornaStatus404__CuandoNoSeActualizoElAffiliado() {
+	public void Put__RetornaStatus404__CuandoNoSeActualizoElAffiliado() throws NotFoundException {
 //		Arrange
 		try {
 			doThrow(new RuntimeException()).when(affiliateServiceMock).Put(any(AffiliateUpdateDto.class));
@@ -118,15 +114,12 @@ public class AffiliateControllerTest {
 
 		}
 
-//		Act
-		var result = affiliateController.Put(new AffiliateUpdateDto());
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(RuntimeException.class, () -> affiliateController.Put(new AffiliateUpdateDto()));
 	}
 
 	@Test
-	public void Put__RetornaStatus201__CuandoSeActualizoElAffiliado() {
+	public void Put__RetornaStatus201__CuandoSeActualizoElAffiliado() throws NotFoundException {
 //		Arrange
 		try {
 			doNothing().when(affiliateServiceMock).Put(any(AffiliateUpdateDto.class));
@@ -142,7 +135,7 @@ public class AffiliateControllerTest {
 	}
 
 	@Test
-	public void Delete__RetornaStatus204__CuandoElAffiliadoNoSeElimina() {
+	public void Delete__RetornaStatus204__CuandoElAffiliadoNoSeElimina() throws NoContentException {
 //		Arrange
 		try {
 			doThrow(new RuntimeException()).when(affiliateServiceMock).Delete(anyLong());
@@ -150,15 +143,12 @@ public class AffiliateControllerTest {
 
 		}
 
-//		Act
-		var result = affiliateController.Delete(15);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(RuntimeException.class, () -> affiliateController.Delete(14));
 	}
 
 	@Test
-	public void Delete__RetornaStatus200__CuandoElAffiliadoSeElimina() {
+	public void Delete__RetornaStatus200__CuandoElAffiliadoSeElimina() throws NoContentException {
 //		Arrange
 		try {
 			doNothing().when(affiliateServiceMock).Delete(anyLong());
