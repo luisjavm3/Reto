@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import java.rmi.NoSuchObjectException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import com.luisjav.reto.DTO.Appointment.AppointmentDto;
 import com.luisjav.reto.DTO.Appointment.AppointmentInsertDto;
 import com.luisjav.reto.DTO.Appointment.AppointmentUpdateDto;
+import com.luisjav.reto.Exception.NotFoundException;
 import com.luisjav.reto.Service.IAppointmentService;
 
 @ExtendWith(MockitoExtension.class)
@@ -88,15 +90,11 @@ public class AppointmentControllerTest {
 //		Arrange
 		when(appointmentServiceMock.GetById(anyLong())).thenReturn(null);
 
-//		Act
-		var result = appointmentController.GetById(12);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+		Assertions.assertThrows(NotFoundException.class, () -> appointmentController.GetById(12));
 	}
 
 	@Test
-	public void GetById__RetornaStatus200__CuandoHayResultado() {
+	public void GetById__RetornaStatus200__CuandoHayResultado() throws NotFoundException {
 //		Arrange
 		when(appointmentServiceMock.GetById(anyLong())).thenReturn(new AppointmentDto());
 
@@ -139,15 +137,12 @@ public class AppointmentControllerTest {
 		} catch (Exception e) {
 		}
 
-//		Act
-		var result = appointmentController.Put(new AppointmentUpdateDto());
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(RuntimeException.class, () -> appointmentController.Put(new AppointmentUpdateDto()));
 	}
 
 	@Test
-	public void Put__RetornaStatus201__CuandoAppointmentSeActualiza() {
+	public void Put__RetornaStatus201__CuandoAppointmentSeActualiza() throws NoSuchObjectException {
 //		Arrange
 		try {
 			doNothing().when(appointmentServiceMock).Put(any(AppointmentUpdateDto.class));
@@ -169,15 +164,12 @@ public class AppointmentControllerTest {
 		} catch (Exception e) {
 		}
 
-//		Act
-		var result = appointmentController.Delete(23);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(RuntimeException.class, () -> appointmentController.Delete(23));
 	}
 
 	@Test
-	public void Delete__RetornaStatus200__CuandoAppointmentSeElimina() {
+	public void Delete__RetornaStatus200__CuandoAppointmentSeElimina() throws NoSuchObjectException {
 //		Arrange
 		try {
 			doNothing().when(appointmentServiceMock).Delete(anyLong());
@@ -196,15 +188,12 @@ public class AppointmentControllerTest {
 //		Arrange
 		when(appointmentServiceMock.GetByDate(any(LocalDate.class))).thenReturn(Collections.emptyList());
 
-//		Act
-		var result = appointmentController.GetByDate(12, 12, 1990);
-
-//		Assert
-		Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+//		Act - Assert
+		Assertions.assertThrows(NotFoundException.class, () -> appointmentController.GetByDate(12, 12, 1990));
 	}
 
 	@Test
-	public void GetByDate__RetornaStatus200__CuandoNoHayResultado() {
+	public void GetByDate__RetornaStatus200__CuandoNoHayResultado() throws NotFoundException {
 //		Arrange
 		var list = new ArrayList<AppointmentDto>();
 		list.add(new AppointmentDto());
